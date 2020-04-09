@@ -99,7 +99,7 @@ public class GUI {
         theDisplay.setLayout(new GridLayout(3, 2));
         theDisplay.add(myCompass);
         theDisplay.add(myTemp);
-        //theDisplay.add(myGraph);
+        theDisplay.add(new DrawGraph());
         theDisplay.add(myBaro);
         theDisplay.add(myHumid);
         theDisplay.add(myRain);
@@ -125,3 +125,25 @@ public class GUI {
 
     
 }
+
+class DrawGraph extends JPanel {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        final Graphics2D g2d = (Graphics2D) g;
+        
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        final Shape rectangle = new Rectangle2D.Double(1,1,getWidth()-10,getHeight()-10);
+        g2d.draw(rectangle);
+    }
+
+}
+
+    
