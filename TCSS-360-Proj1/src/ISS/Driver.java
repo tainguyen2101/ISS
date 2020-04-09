@@ -3,7 +3,7 @@ package ISS;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-//import java.util.ArrayList;
+import java.util.ArrayList;
 
 import Console.GUI;
 
@@ -25,6 +25,9 @@ public class Driver {
     private Humidity humiLabel;
 
     private static GUI theGUI;
+
+    private ArrayList<Integer> storage = new ArrayList<>();
+
 
     public static void main(String[] args) {
         try {
@@ -56,6 +59,7 @@ public class Driver {
                     switch (i) {
                         case 1:
                             winLabel = new Wind(Integer.valueOf(arrData[i]), Integer.valueOf(arrData[i+1]));
+                            storage.add(winLabel.getMyWindSpeed());
                             break;
                         case 3:
                             tempLabel = new Temperature(Double.valueOf(arrData[i])/10);
@@ -71,9 +75,18 @@ public class Driver {
                             break;
                     }
                 }
+
+                double[] graphData = new double[storage.size()];
+                if (storage.size() < 2) {
+                    graphData[0] = storage.get(0);
+                } else {
+                    for (int i = 0; i < storage.size(); i++) {
+                        graphData[i] = storage.get(i);
+                    }
+                }
                 theGUI.updateDisplay(baroLabel, humiLabel, rainLabel, tempLabel, winLabel);
                 synchronized (this) {
-                    this.wait(5*1000);
+                    this.wait(60*1000);
                 }
             }
             rdr.close();
@@ -103,76 +116,6 @@ public class Driver {
     public Humidity getHumiLabel() {
         return humiLabel;
     }
-    /*
-    private String makeGraph(double [] data) {
-        int max = 25;
-        int min = 0;
-        double multiple = 100/(max-min);
-        int height = 10;
-        int length = 24;
-        double averageChange = ((100)/height);
-        String graph = "";
-    
-    
-        for (int i=0; i<height+4; i++) {
-    
-            for(int k =0; k<length+1; k++) {
-    
-                if( k!=0 && (int)(((data[k-1]-(min))*multiple)/averageChange)==height-i ) {
-                    if(k==length) {
-                        graph=graph+" o |";
-                    }
-                    else {
-                        graph=graph+" o";
-                    }
-                }
-                else if(i==0) {
-    
-                    if(k==0 ) {
-                        graph=graph+"  ";
-                    }
-                    else if(k==length ) {
-                        graph=graph+"___";
-                    }
-                    else {
-                        graph=graph+"__";
-                    }
-                }
-                else if(k==0 && i<height+2) {
-                    graph=graph+"| ";
-                }
-                else if(k==length && i<height+2) {
-    
-                    if(i==height+1) {
-                        graph=graph+" |";
-                        graph=graph+"\n Vertical Scale \t\t  X10";
-                    }
-                    else {
-                        graph=graph+"   |";
-    
-                    }
-                }
-                else if(i==height+1) {
-                    if (k==0) {
-                        graph=graph+"  ";
-                    }
-                    else if(k==length-1) {
-                        graph=graph+"____";
-    
-                    }
-                    else {
-                        graph=graph+"__";
-                    }
-                }
-                else {
-    
-                    graph=graph+"  ";
-                }
-            }
-            graph=graph+"\n";
-        }
-    
-        return graph;
-    }*/
+
 
 }

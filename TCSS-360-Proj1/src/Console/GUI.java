@@ -3,6 +3,7 @@ package Console;
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
+import java.awt.geom.Rectangle2D;
 
 import ISS.*;
 
@@ -26,8 +27,6 @@ public class GUI {
     private JTextArea myRain;
 
     private JTextArea myCompass;
-
-    private JTextArea myGraph;
 
     private JTextArea myHumid;
 
@@ -96,15 +95,14 @@ public class GUI {
         myHumid = new JTextArea();
         myRain = new JTextArea();
         myCompass = new JTextArea();
-        myGraph = new JTextArea();
 
         theDisplay.setLayout(new GridLayout(3, 2));
         theDisplay.add(myCompass);
         theDisplay.add(myTemp);
+        //theDisplay.add(myGraph);
         theDisplay.add(myBaro);
         theDisplay.add(myHumid);
         theDisplay.add(myRain);
-        theDisplay.add(myGraph);
 
         return theDisplay;
     }
@@ -120,12 +118,10 @@ public class GUI {
         myCompass.setText(theWind.getMyCompass());
         myCompass.setSize(myCompass.getPreferredSize());
         //myGraph.setText(theGraph);
-        //myGraph.setSize(myGraph.getPreferredSize());
         myDisplay.repaint();
         myFrame.setMinimumSize(myFrame.getPreferredSize());
         myFrame.repaint();
     }
 
-    
     
 }
