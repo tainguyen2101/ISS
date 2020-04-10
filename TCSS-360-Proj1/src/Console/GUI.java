@@ -50,10 +50,9 @@ public class GUI {
     private void setUp() throws Exception {
         myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myFrame.add(createPanel());
-        //myFrame.pack();
         myFrame.setMinimumSize(myFrame.getPreferredSize());
-        myFrame.setLocation(SCREEN_SIZE.width / 2 - myFrame.getWidth() / 2,
-                (int) (SCREEN_SIZE.getHeight() / 2 - myFrame.getHeight() / 2));
+        myFrame.setLocation(SCREEN_SIZE.width / 8,
+                (int) (SCREEN_SIZE.getHeight() / 8));
         myFrame.setVisible(true);
     }
 
@@ -106,6 +105,7 @@ public class GUI {
         theDisplay.add(myBaro);
         theDisplay.add(myHumid);
         theDisplay.add(myRain);
+        theDisplay.add(new makeCompass());
         return theDisplay;
     }
 
@@ -139,15 +139,15 @@ class makeGraph extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
-    int[] data;
+    private int[] data;
     private ArrayList<Shape> shapes = new ArrayList<>();
 
     public makeGraph(int[] theData) {
         this.data = theData;
     }
-
+    @Override
     public void paintComponent(Graphics g) {
-        
+        super.paintComponent(g);
         shapes.clear();
         final Graphics2D g2d = (Graphics2D) g;
         
@@ -163,6 +163,22 @@ class makeGraph extends JPanel {
             g2d.fill(shapes.get(i));
             g2d.draw(shapes.get(i));
         }
+    }
+}
+class makeCompass extends JPanel {
+
+    private static final long serialVersionUID = 1L;
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        final Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        final Shape circle = new Ellipse2D.Double(getWidth()/4, 0, getHeight(), getHeight());
+        g2d.draw(circle);
+        g2d.drawString("N", getWidth()/2, 12);
+        g2d.drawString("S", getWidth()/2, getHeight()-2);
+        g2d.drawString("W", getWidth()/4+2, getHeight()/2);
+        g2d.drawString("E", getWidth()-(getWidth()/4)-10, getHeight()/2);
     }
 }
 
