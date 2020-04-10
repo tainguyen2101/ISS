@@ -31,9 +31,7 @@ public class GUI {
 
     private JTextArea myHumid;
 
-    private ArrayList<Integer> storage;
-
-
+    private final ArrayList<Integer> storage;
 
     public GUI() throws Exception {
         super();
@@ -51,8 +49,7 @@ public class GUI {
         myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myFrame.add(createPanel());
         myFrame.setMinimumSize(myFrame.getPreferredSize());
-        myFrame.setLocation(SCREEN_SIZE.width / 8,
-                (int) (SCREEN_SIZE.getHeight() / 8));
+        myFrame.setLocation(SCREEN_SIZE.width / 8, (int) (SCREEN_SIZE.getHeight() / 8));
         myFrame.setVisible(true);
     }
 
@@ -71,7 +68,7 @@ public class GUI {
     }
 
     private JPanel createButtonPanel() {
-        final JPanel buttonPanel = new JPanel(new GridLayout(6,2)); 
+        final JPanel buttonPanel = new JPanel(new GridLayout(6, 2));
         myButton.add(new JButton("Temp"));
         myButton.add(new JButton("2ND"));
         myButton.add(new JButton("Hum"));
@@ -111,7 +108,7 @@ public class GUI {
 
     public void updateDisplay(final Barometer theBaro, final Humidity theHumid, final Rain theRain,
             final Temperature theTemp, final Wind theWind) {
-        storage.add(theWind.getMyWindSpeed());        
+        storage.add(theWind.getMyWindSpeed());
         myTemp.setText("TEMPERATURE\n " + theTemp.getMyTemp());
         myTemp.setSize(myTemp.getPreferredSize());
         myBaro.setText("BAROMETER\n " + theBaro.getMyBaroPressure());
@@ -127,48 +124,52 @@ public class GUI {
     }
 
     private int[] toArray() {
-        int[] result = new int[storage.size()];
-        for(int i = 0; i < storage.size(); i++) {
+        final int[] result = new int[storage.size()];
+        for (int i = 0; i < storage.size(); i++) {
             result[i] = storage.get(i) * 10;
         }
         return result;
     }
-    
+
 }
+
 class makeGraph extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
-    private int[] data;
-    private ArrayList<Shape> shapes = new ArrayList<>();
+    private final int[] data;
+    private final ArrayList<Shape> shapes = new ArrayList<>();
 
-    public makeGraph(int[] theData) {
+    public makeGraph(final int[] theData) {
         this.data = theData;
     }
+
     @Override
-    public void paintComponent(Graphics g) {
+    public void paintComponent(final Graphics g) {
         super.paintComponent(g);
         shapes.clear();
         final Graphics2D g2d = (Graphics2D) g;
-        
+
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        final Shape rectangle = new Rectangle2D.Double(10,10,getWidth()-20,getHeight()-20);
+        final Shape rectangle = new Rectangle2D.Double(10, 10, getWidth() - 20, getHeight() - 20);
         g2d.draw(rectangle);
         for (int i = 0; i < data.length; i++) {
-            shapes.add(new Ellipse2D.Double(((getWidth()/24)*i)+10,getHeight() - 10 - data[i],5,5));
+            shapes.add(new Ellipse2D.Double(((getWidth() / 24) * i) + 10, getHeight() - 10 - data[i], 5, 5));
         }
-        for (int i = 0; i < shapes.size(); i++){
+        for (int i = 0; i < shapes.size(); i++) {
             g2d.fill(shapes.get(i));
             g2d.draw(shapes.get(i));
         }
     }
 }
+
 class makeCompass extends JPanel {
 
     private static final long serialVersionUID = 1L;
+
     @Override
-    public void paintComponent(Graphics g) {
+    public void paintComponent(final Graphics g) {
         super.paintComponent(g);
         final Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
