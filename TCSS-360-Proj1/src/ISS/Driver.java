@@ -77,7 +77,7 @@ public class Driver {
                 }
                 theGUI.updateDisplay(baroLabel, humiLabel, rainLabel, tempLabel, winLabel);
                 synchronized (this) {
-                    this.wait(60*1000);
+                    this.wait(3*1000);
                 }
             }
             rdr.close();

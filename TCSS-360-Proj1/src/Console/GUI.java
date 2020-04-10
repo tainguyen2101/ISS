@@ -31,9 +31,13 @@ public class GUI {
 
     private JTextArea myHumid;
 
+    private ArrayList<Integer> storage;
+
+
 
     public GUI() throws Exception {
         super();
+        storage = new ArrayList<>();
         myFrame = new JFrame("ISS");
         myButton = new ArrayList<JButton>();
         setUp();
@@ -99,7 +103,6 @@ public class GUI {
         theDisplay.setLayout(new GridLayout(3, 2));
         theDisplay.add(myCompass);
         theDisplay.add(myTemp);
-        theDisplay.add(new makeGraph());
         theDisplay.add(myBaro);
         theDisplay.add(myHumid);
         theDisplay.add(myRain);
@@ -108,6 +111,7 @@ public class GUI {
 
     public void updateDisplay(final Barometer theBaro, final Humidity theHumid, final Rain theRain,
             final Temperature theTemp, final Wind theWind) {
+        storage.add(theWind.getMyWindSpeed());        
         myTemp.setText("TEMPERATURE\n " + theTemp.getMyTemp() );
         myTemp.setSize(myTemp.getPreferredSize());
         myBaro.setText("BAROMETER\n " + theBaro.getMyBaroPressure());
@@ -115,25 +119,36 @@ public class GUI {
         myRain.setText("RAIN RATE\n " + theRain.getMyRainRate());
         myCompass.setText(theWind.getMyCompass());
         myCompass.setSize(myCompass.getPreferredSize());
+        myDisplay.remove(2);
+        myDisplay.add(new makeGraph(toArray()), 2);
         myDisplay.repaint();
         myFrame.setMinimumSize(myFrame.getPreferredSize());
         myFrame.repaint();
     }
 
+    private int[] toArray() {
+        int[] result = new int[storage.size()];
+        for(int i = 0; i < storage.size(); i++) {
+            result[i] = storage.get(i) * 10;
+        }
+        return result;
+    }
     
 }
 class makeGraph extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
-
+    int[] data;
     private ArrayList<Shape> shapes = new ArrayList<>();
 
+    public makeGraph(int[] theData) {
+        this.data = theData;
+    }
+
     public void paintComponent(Graphics g) {
-        int[] data = new int[24];
-        for (int i = 1; i < data.length; i++) {
-            data[i-1] = i * 10;
-        }
+        
+        shapes.clear();
         final Graphics2D g2d = (Graphics2D) g;
         
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
