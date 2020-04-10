@@ -3,7 +3,6 @@ package ISS;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
 
 import Console.GUI;
 
@@ -12,7 +11,9 @@ import Console.GUI;
  */
 public class Driver {
 
-    private static final File test = new File("C:\\Users\\taing\\Desktop\\Java\\OutSide.txt");
+    //private static final File test = new File("C:\\Users\\taing\\Desktop\\Java\\OutSide.txt");
+
+    private static final File testMac = new File("/Users/taing/Desktop/TCSS360-Project1/TCSS360-Project1-ISS/OutSide.txt");
 
     private Temperature tempLabel;
 
@@ -26,7 +27,7 @@ public class Driver {
 
     private static GUI theGUI;
 
-    private ArrayList<Integer> storage = new ArrayList<>();
+   //private ArrayList<Integer> storage = new ArrayList<>();
 
 
     public static void main(String[] args) {
@@ -36,7 +37,7 @@ public class Driver {
             e1.printStackTrace();
         }
         try {
-            new Driver().run(test);
+            new Driver().run(testMac);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,7 +60,6 @@ public class Driver {
                     switch (i) {
                         case 1:
                             winLabel = new Wind(Integer.valueOf(arrData[i]), Integer.valueOf(arrData[i+1]));
-                            storage.add(winLabel.getMyWindSpeed());
                             break;
                         case 3:
                             tempLabel = new Temperature(Double.valueOf(arrData[i])/10);
@@ -73,15 +73,6 @@ public class Driver {
                         case 6:
                             rainLabel = new Rain(Double.valueOf(arrData[i])/100);
                             break;
-                    }
-                }
-
-                double[] graphData = new double[storage.size()];
-                if (storage.size() < 2) {
-                    graphData[0] = storage.get(0);
-                } else {
-                    for (int i = 0; i < storage.size(); i++) {
-                        graphData[i] = storage.get(i);
                     }
                 }
                 theGUI.updateDisplay(baroLabel, humiLabel, rainLabel, tempLabel, winLabel);

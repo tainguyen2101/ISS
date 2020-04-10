@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Ellipse2D;
 
 import ISS.*;
 
@@ -30,7 +31,6 @@ public class GUI {
 
     private JTextArea myHumid;
 
-    
 
     public GUI() throws Exception {
         super();
@@ -99,17 +99,15 @@ public class GUI {
         theDisplay.setLayout(new GridLayout(3, 2));
         theDisplay.add(myCompass);
         theDisplay.add(myTemp);
-        theDisplay.add(new DrawGraph());
+        theDisplay.add(new makeGraph());
         theDisplay.add(myBaro);
         theDisplay.add(myHumid);
         theDisplay.add(myRain);
-
         return theDisplay;
     }
 
     public void updateDisplay(final Barometer theBaro, final Humidity theHumid, final Rain theRain,
             final Temperature theTemp, final Wind theWind) {
-        
         myTemp.setText("TEMPERATURE\n " + theTemp.getMyTemp() );
         myTemp.setSize(myTemp.getPreferredSize());
         myBaro.setText("BAROMETER\n " + theBaro.getMyBaroPressure());
@@ -117,7 +115,6 @@ public class GUI {
         myRain.setText("RAIN RATE\n " + theRain.getMyRainRate());
         myCompass.setText(theWind.getMyCompass());
         myCompass.setSize(myCompass.getPreferredSize());
-        //myGraph.setText(theGraph);
         myDisplay.repaint();
         myFrame.setMinimumSize(myFrame.getPreferredSize());
         myFrame.repaint();
@@ -125,25 +122,33 @@ public class GUI {
 
     
 }
+class makeGraph extends JPanel {
 
-class DrawGraph extends JPanel {
-
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
 
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
 
+    private ArrayList<Shape> shapes = new ArrayList<>();
+
+    public void paintComponent(Graphics g) {
+        int[] data = new int[24];
+        for (int i = 1; i < data.length; i++) {
+            data[i-1] = i * 10;
+        }
         final Graphics2D g2d = (Graphics2D) g;
         
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        final Shape rectangle = new Rectangle2D.Double(1,1,getWidth()-10,getHeight()-10);
+        final Shape rectangle = new Rectangle2D.Double(10,10,getWidth()-20,getHeight()-20);
         g2d.draw(rectangle);
+        for (int i = 0; i < data.length; i++) {
+            shapes.add(new Ellipse2D.Double(((getWidth()/24)*i)+10,getHeight() - 10 - data[i],5,5));
+        }
+        
+        for (int i = 0; i < shapes.size(); i++){
+            g2d.fill(shapes.get(i));
+            g2d.draw(shapes.get(i));
+        }
     }
-
 }
 
     
