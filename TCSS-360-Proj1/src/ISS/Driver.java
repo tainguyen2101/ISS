@@ -11,9 +11,9 @@ import Console.GUI;
  */
 public class Driver {
 
-    //private static final File test = new File("C:\\Users\\taing\\Desktop\\Java\\OutSide.txt");
+    private static final File test = new File("C:\\Users\\taing\\Desktop\\Java\\OutSide.txt");
 
-    private static final File testMac = new File("/Users/taing/Desktop/TCSS360-Project1/TCSS360-Project1-ISS/OutSide.txt");
+    //private static final File testMac = new File("/Users/taing/Desktop/TCSS360-Project1/TCSS360-Project1-ISS/OutSide.txt");
 
     private Temperature tempLabel;
 
@@ -37,7 +37,7 @@ public class Driver {
             e1.printStackTrace();
         }
         try {
-            new Driver().run(testMac);
+            new Driver().run(test);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,7 +77,7 @@ public class Driver {
                 }
                 theGUI.updateDisplay(baroLabel, humiLabel, rainLabel, tempLabel, winLabel);
                 synchronized (this) {
-                    this.wait(3*1000);
+                    this.wait(60*1000);
                 }
             }
             rdr.close();
@@ -93,20 +93,14 @@ public class Driver {
     public Wind getWinLabel() {
         return winLabel;
     }
-
-
     public Rain getRainLabel() {
         return rainLabel;
     }
-
-
     public Barometer getBaroLabel() {
         return baroLabel;
     }
-
     public Humidity getHumiLabel() {
         return humiLabel;
     }
-
 
 }
