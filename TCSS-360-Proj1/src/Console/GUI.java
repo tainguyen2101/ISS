@@ -112,7 +112,7 @@ public class GUI {
     public void updateDisplay(final Barometer theBaro, final Humidity theHumid, final Rain theRain,
             final Temperature theTemp, final Wind theWind) {
         storage.add(theWind.getMyWindSpeed());        
-        myTemp.setText("TEMPERATURE\n " + theTemp.getMyTemp() );
+        myTemp.setText("TEMPERATURE\n " + theTemp.getMyTemp());
         myTemp.setSize(myTemp.getPreferredSize());
         myBaro.setText("BAROMETER\n " + theBaro.getMyBaroPressure());
         myHumid.setText("HUMIDITY\n " + theHumid.getMyHumid());
@@ -158,7 +158,6 @@ class makeGraph extends JPanel {
         for (int i = 0; i < data.length; i++) {
             shapes.add(new Ellipse2D.Double(((getWidth()/24)*i)+10,getHeight() - 10 - data[i],5,5));
         }
-        
         for (int i = 0; i < shapes.size(); i++){
             g2d.fill(shapes.get(i));
             g2d.draw(shapes.get(i));
