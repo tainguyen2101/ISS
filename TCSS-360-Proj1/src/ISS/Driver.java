@@ -13,7 +13,7 @@ public class Driver {
 
     private static final File test = new File("C:\\Users\\taing\\Desktop\\Java\\OutSide.txt");
 
-    //private static final File testMac = new File("/Users/taing/Desktop/TCSS360-Project1/TCSS360-Project1-ISS/OutSide.txt");
+    private static final File testMac = new File("/Users/taing/Desktop/TCSS360-Project1/TCSS360-Project1-ISS/OutSide.txt");
 
     private Temperature tempLabel;
 
@@ -37,7 +37,7 @@ public class Driver {
             e1.printStackTrace();
         }
         try {
-            new Driver().run(test);
+            new Driver().run(testMac);
         } catch (Exception e) {
             e.printStackTrace();
         }

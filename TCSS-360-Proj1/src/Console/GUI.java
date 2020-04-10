@@ -173,11 +173,17 @@ class makeCompass extends JPanel {
         final Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         final Shape circle = new Ellipse2D.Double(getWidth()/4, 0, getHeight(), getHeight());
+        final Shape circle2 = new Ellipse2D.Double((getWidth()/4)+14, 14, 
+                                                    getHeight()-28,getHeight()-28);
         g2d.draw(circle);
-        g2d.drawString("N", getWidth()/2, 12);
-        g2d.drawString("S", getWidth()/2, getHeight()-2);
+        g2d.draw(circle2);
+        g2d.drawString("Wind", 20,20);
+        g2d.drawString("N", getWidth()/2-3, 12);
+        g2d.drawString("S", getWidth()/2-3, getHeight()-2);
         g2d.drawString("W", getWidth()/4+2, getHeight()/2);
         g2d.drawString("E", getWidth()-(getWidth()/4)-10, getHeight()/2);
+        g2d.drawString("25", (getWidth()/2)-5, getHeight()/2);
+        g2d.drawString("MPH", (getWidth()/2)-10, (getHeight()/2)+15);
     }
 }
 
