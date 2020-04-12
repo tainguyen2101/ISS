@@ -30,7 +30,7 @@ public class GUI {
 
     private final ArrayList<JButton> myButton;
 
-    private JTextArea myDate, myTime, myTemp, myBaro, myRain, myHumid, myTempIn, myHumidIn;
+    private JTextArea myDate, myTime, myTemp, myBaro, myRain, myHumid, myTempIn, myHumidIn, myChill;
 
     private JPanel myGraph, myCompass;
 
@@ -108,6 +108,7 @@ public class GUI {
         myRain = new JTextArea();
         myTempIn = new JTextArea();
         myHumidIn = new JTextArea();
+        myChill = new JTextArea();
         myTime = new JTextArea(TIME_FORMAT.format(time));
         myDate = new JTextArea(DATE_FORMAT.format(date));
 
@@ -119,6 +120,7 @@ public class GUI {
         tempInfo.add(myHumid);
         tempInfo.add(myTempIn);
         tempInfo.add(myHumidIn);
+        tempInfo.add(myChill);
         tempInfo.add(myRain);
 
 
@@ -139,14 +141,15 @@ public class GUI {
             final Temperature theTemp, final Wind theWind, final HumidIn humidIn, final TempIn tempIn) {
 
         storage.add(theWind.getMyWindSpeed());
-
-        myTemp.setText("TEMP OUT\n " + theTemp.getMyTemp());
-        myTemp.setSize(myTemp.getPreferredSize());
-        myBaro.setText("BAROMETER\n " + theBaro.getMyBaroPressure());
-        myHumid.setText("HUM OUT\n " + theHumid.getMyHumid());
-        myRain.setText("RAIN RATE\n " + theRain.getMyRainRate());
-        myTempIn.setText("TEMP IN\n " + tempIn.getMyTemp());
-        myHumidIn.setText("HUM IN\n " + humidIn.getMyHumid());
+        double chill = 35.74 + 0.6215 * theTemp.getMyTemp() - (35.75 * (Math.pow(theWind.getMyWindSpeed(), 0.16))) 
+                        + (0.4275 * theTemp.getMyTemp() * (Math.pow(theWind.getMyWindSpeed(), 0.16)));
+        myTemp.setText("TEMP OUT\n " + theTemp.getMyTemp() + "\u00B0" + "F");
+        myBaro.setText("BAROMETER\n " + theBaro.getMyBaroPressure() + " in");
+        myHumid.setText("HUM OUT\n " + theHumid.getMyHumid() + "%");
+        myRain.setText("RAIN RATE\n " + theRain.getMyRainRate() + " in/hr");
+        myTempIn.setText("TEMP IN\n " + tempIn.getMyTemp()  + "\u00B0" + "F");
+        myHumidIn.setText("HUM IN\n " + humidIn.getMyHumid() + "%");
+        myChill.setText("CHILL\n" + String.format("%.2f",chill) + "\u00B0" + "F");
         
         myGraph = new makeGraph(toArray());
         myCompass = new makeCompass(theWind.getMyWindSpeed());
