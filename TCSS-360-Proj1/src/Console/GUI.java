@@ -155,9 +155,12 @@ public class GUI {
         graphInfo.add(myGraph, BorderLayout.SOUTH);
 
         graphInfo.setSize(graphInfo.getPreferredSize());
+        graphInfo.revalidate();
+        myDisplay.revalidate();
         graphInfo.repaint();
         myDisplay.repaint();
         myFrame.setMinimumSize(myFrame.getPreferredSize());
+        myFrame.revalidate();
         myFrame.repaint();
         
     }
