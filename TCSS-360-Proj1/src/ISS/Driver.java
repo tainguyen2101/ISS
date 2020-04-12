@@ -5,15 +5,19 @@ import java.io.File;
 import java.io.FileReader;
 
 import Console.GUI;
+import Envoy.HumidIn;
+import Envoy.TempIn;
 
 /**
  * Driver
  */
 public class Driver {
 
-    private static final File test = new File("C:\\Users\\taing\\Desktop\\Java\\OutSide.txt");
+    private static GUI theGUI;
 
-    private static final File testMac = new File("/Users/taing/Desktop/TCSS360-Project1/TCSS360-Project1-ISS/OutSide.txt");
+    private static final File Outside = new File("OutSide.txt");
+
+    private static final File Inside = new File("InSide.txt");
 
     private Temperature tempLabel;
 
@@ -25,10 +29,9 @@ public class Driver {
 
     private Humidity humiLabel;
 
-    private static GUI theGUI;
+    private HumidIn humidIn;
 
-   //private ArrayList<Integer> storage = new ArrayList<>();
-
+    private TempIn tempIn;
 
     public static void main(String[] args) {
         try {
@@ -37,7 +40,7 @@ public class Driver {
             e1.printStackTrace();
         }
         try {
-            new Driver().run(test);
+            new Driver().run();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -50,37 +53,50 @@ public class Driver {
      * @param theFile
      * @throws Exception
      */
-    private void run(final File theFile) throws Exception {
+    private void run() throws Exception {
         try {
-            final BufferedReader rdr = new BufferedReader(new FileReader(theFile));
-            String data;
-            while ((data = rdr.readLine()) != null) {
-                final String[] arrData = data.split(",", 7);
-                for (int i = 1; i < data.length(); i++) {
+            final BufferedReader rdrISS = new BufferedReader(new FileReader(Outside));
+            final BufferedReader rdrEnv = new BufferedReader(new FileReader(Inside));
+            String dataISS;
+            String dataEnv;
+            while ((dataISS = rdrISS.readLine()) != null && (dataEnv = rdrEnv.readLine()) != null) {
+                final String[] arrDataISS = dataISS.split(",", 7);
+                final String[] arrDataEnv = dataEnv.split(",", 3);
+                for (int i = 1; i < dataISS.length(); i++) {
                     switch (i) {
                         case 1:
-                            winLabel = new Wind(Integer.valueOf(arrData[i]), Integer.valueOf(arrData[i+1]));
+                            winLabel = new Wind(Integer.valueOf(arrDataISS[i]), Integer.valueOf(arrDataISS[i+1]));
                             break;
                         case 3:
-                            tempLabel = new Temperature(Double.valueOf(arrData[i])/10);
+                            tempLabel = new Temperature(Double.valueOf(arrDataISS[i])/10);
                             break;
                         case 4:
-                            humiLabel = new Humidity(Double.valueOf(arrData[i])/10);
+                            humiLabel = new Humidity(Double.valueOf(arrDataISS[i])/10);
                             break;
                         case 5:
-                            baroLabel = new Barometer(Double.valueOf(arrData[i])/10);
+                            baroLabel = new Barometer(Double.valueOf(arrDataISS[i])/10);
                             break;
                         case 6:
-                            rainLabel = new Rain(Double.valueOf(arrData[i])/100);
+                            rainLabel = new Rain(Double.valueOf(arrDataISS[i])/100);
                             break;
                     }
                 }
-                theGUI.updateDisplay(baroLabel, humiLabel, rainLabel, tempLabel, winLabel);
+                for (int i = 1; i < dataEnv.length(); i++) {
+                    switch (i) {
+                        case 1:
+                            tempIn = new TempIn(Double.valueOf(arrDataEnv[i])/10);
+                            break;
+                        case 2:
+                            humidIn = new HumidIn(Double.valueOf(arrDataEnv[i])/10);
+                    }
+                }               
+                theGUI.updateDisplay(baroLabel, humiLabel, rainLabel, tempLabel, winLabel, humidIn, tempIn);
                 synchronized (this) {
                     this.wait(5*1000);
                 }
             }
-            rdr.close();
+            rdrISS.close();
+            rdrEnv.close();
         } catch (final Exception e) {
             e.printStackTrace();
         }

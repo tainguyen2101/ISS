@@ -1,21 +1,18 @@
 package Console;
 
+import ISS.*;
+import Envoy.*;
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.geom.Rectangle2D;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.awt.geom.Ellipse2D;
 
-import ISS.*;
-
-
 public class GUI {
 
-    private final JFrame myFrame;
+    
 
     private static final Toolkit TOOL = Toolkit.getDefaultToolkit();
 
@@ -25,33 +22,17 @@ public class GUI {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MM/dd");
 
-    private LocalTime time;
+    private final JFrame myFrame;
 
-    private LocalDate date;
+    private LocalDateTime time, date;
 
-    private JPanel myDisplay;
-
-    final JPanel tempInfo;
-
-    final JPanel graphInfo;
+    private JPanel myDisplay, tempInfo, graphInfo;
 
     private final ArrayList<JButton> myButton;
 
-    private JTextArea myDate;
+    private JTextArea myDate, myTime, myTemp, myBaro, myRain, myHumid, myTempIn, myHumidIn;
 
-    private JTextArea myTime;
-
-    private JTextArea myTemp;
-    
-    private JTextArea myBaro;
-
-    private JTextArea myRain;
-
-    private JTextArea myHumid;
-
-    private JPanel myGraph;
-
-    private JPanel myCompass;
+    private JPanel myGraph, myCompass;
 
     private final ArrayList<Integer> storage;
 
@@ -113,18 +94,20 @@ public class GUI {
 
     private JPanel createDisplay() {
 
-        time = LocalTime.now();
-        date = LocalDate.now();
+        time = LocalDateTime.now();
+        date = LocalDateTime.now();
         final JPanel theDisplay = new JPanel();
 
         graphInfo.setLayout(new BorderLayout());   
-        tempInfo.setLayout(new GridLayout(2,3));
+        tempInfo.setLayout(new GridLayout(3,3));
         theDisplay.setLayout(new BorderLayout());
 
         myTemp = new JTextArea();
         myBaro = new JTextArea();
         myHumid = new JTextArea();
         myRain = new JTextArea();
+        myTempIn = new JTextArea();
+        myHumidIn = new JTextArea();
         myTime = new JTextArea(TIME_FORMAT.format(time));
         myDate = new JTextArea(DATE_FORMAT.format(date));
 
@@ -134,6 +117,8 @@ public class GUI {
         tempInfo.add(myTemp);
         tempInfo.add(myBaro);
         tempInfo.add(myHumid);
+        tempInfo.add(myTempIn);
+        tempInfo.add(myHumidIn);
         tempInfo.add(myRain);
 
 
@@ -151,15 +136,17 @@ public class GUI {
     }
 
     public void updateDisplay(final Barometer theBaro, final Humidity theHumid, final Rain theRain,
-            final Temperature theTemp, final Wind theWind) {
+            final Temperature theTemp, final Wind theWind, final HumidIn humidIn, final TempIn tempIn) {
 
         storage.add(theWind.getMyWindSpeed());
 
-        myTemp.setText("TEMPERATURE\n " + theTemp.getMyTemp());
+        myTemp.setText("TEMP OUT\n " + theTemp.getMyTemp());
         myTemp.setSize(myTemp.getPreferredSize());
         myBaro.setText("BAROMETER\n " + theBaro.getMyBaroPressure());
-        myHumid.setText("HUMIDITY\n " + theHumid.getMyHumid());
+        myHumid.setText("HUM OUT\n " + theHumid.getMyHumid());
         myRain.setText("RAIN RATE\n " + theRain.getMyRainRate());
+        myTempIn.setText("TEMP IN\n " + tempIn.getMyTemp());
+        myHumidIn.setText("HUM IN\n " + humidIn.getMyHumid());
         
         myGraph = new makeGraph(toArray());
         myCompass = new makeCompass(theWind.getMyWindSpeed());
@@ -206,7 +193,6 @@ class makeGraph extends JPanel {
     @Override
     public void paintComponent(final Graphics g) {
         super.paintComponent(g);
-        shapes.clear();
         final Graphics2D g2d = (Graphics2D) g;
 
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
