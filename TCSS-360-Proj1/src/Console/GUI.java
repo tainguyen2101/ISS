@@ -4,6 +4,10 @@ import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.geom.Rectangle2D;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.awt.geom.Ellipse2D;
 
 import ISS.*;
@@ -17,6 +21,14 @@ public class GUI {
 
     private static final Dimension SCREEN_SIZE = TOOL.getScreenSize();
 
+    private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm");
+
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MM/dd");
+
+    private LocalTime time;
+
+    private LocalDate date;
+
     private JPanel myDisplay;
 
     final JPanel tempInfo;
@@ -24,6 +36,10 @@ public class GUI {
     final JPanel graphInfo;
 
     private final ArrayList<JButton> myButton;
+
+    private JTextArea myDate;
+
+    private JTextArea myTime;
 
     private JTextArea myTemp;
     
@@ -97,28 +113,36 @@ public class GUI {
 
     private JPanel createDisplay() {
 
+        time = LocalTime.now();
+        date = LocalDate.now();
         final JPanel theDisplay = new JPanel();
 
         graphInfo.setLayout(new BorderLayout());
         theDisplay.setLayout(new BorderLayout());
+        
 
         myTemp = new JTextArea();
         myBaro = new JTextArea();
         myHumid = new JTextArea();
         myRain = new JTextArea();
-        //myCompass = new JTextArea();
+        myTime = new JTextArea(TIME_FORMAT.format(time));
+        myDate = new JTextArea(DATE_FORMAT.format(date));
 
+        tempInfo.setLayout(new GridLayout(2,3));
+        tempInfo.add(myDate);
+        tempInfo.add(myTime);
         tempInfo.add(myTemp);
         tempInfo.add(myBaro);
         tempInfo.add(myHumid);
         tempInfo.add(myRain);
+
 
         myCompass = new makeCompass(0);
         myGraph = new makeGraphTemp();
 
         graphInfo.add(myCompass, BorderLayout.NORTH);
         graphInfo.add(myGraph, BorderLayout.SOUTH);
-        //theDisplay.add(myCompass);
+        
         
         theDisplay.add(graphInfo, BorderLayout.WEST);
         theDisplay.add(tempInfo, BorderLayout.EAST);
@@ -128,21 +152,21 @@ public class GUI {
 
     public void updateDisplay(final Barometer theBaro, final Humidity theHumid, final Rain theRain,
             final Temperature theTemp, final Wind theWind) {
+
         storage.add(theWind.getMyWindSpeed());
+
         myTemp.setText("TEMPERATURE\n " + theTemp.getMyTemp());
         myTemp.setSize(myTemp.getPreferredSize());
         myBaro.setText("BAROMETER\n " + theBaro.getMyBaroPressure());
         myHumid.setText("HUMIDITY\n " + theHumid.getMyHumid());
         myRain.setText("RAIN RATE\n " + theRain.getMyRainRate());
-        //myCompass.setText(theWind.getMyCompass());
-        //myCompass.setSize(myCompass.getPreferredSize());
-        //myDisplay.remove(2);
-        //myDisplay.add(new makeGraph(toArray()), 2);
+        
         myGraph = new makeGraph(toArray());
         myCompass = new makeCompass(theWind.getMyWindSpeed());
         graphInfo.removeAll();
         graphInfo.add(myCompass, BorderLayout.NORTH);
         graphInfo.add(myGraph, BorderLayout.SOUTH);
+
         graphInfo.setSize(graphInfo.getPreferredSize());
         graphInfo.repaint();
         myDisplay.repaint();
@@ -165,7 +189,7 @@ class makeGraph extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
-    private final int[] data;
+    private int[] data;
     private final ArrayList<Shape> shapes = new ArrayList<>();
     /** The width of the panel. */
     private static final int WIDTH = 300;
@@ -264,7 +288,7 @@ class makeCompass extends JPanel {
         g2d.drawString("W", getWidth()/8+2, getHeight()/2);
         g2d.drawString("E", getWidth()-(getWidth()/4), getHeight()/2);
         g2d.drawString(windSpeed, (getWidth()/2)-15, getHeight()/2);
-        g2d.drawString("MPH", (getWidth()/2)-17, (getHeight()/2)+15);
+        g2d.drawString("MPH", (getWidth()/2)-25, (getHeight()/2)+15);
     }
 }
 
