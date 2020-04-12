@@ -117,9 +117,9 @@ public class GUI {
         date = LocalDate.now();
         final JPanel theDisplay = new JPanel();
 
-        graphInfo.setLayout(new BorderLayout());
+        graphInfo.setLayout(new BorderLayout());   
+        tempInfo.setLayout(new GridLayout(2,3));
         theDisplay.setLayout(new BorderLayout());
-        
 
         myTemp = new JTextArea();
         myBaro = new JTextArea();
@@ -128,7 +128,7 @@ public class GUI {
         myTime = new JTextArea(TIME_FORMAT.format(time));
         myDate = new JTextArea(DATE_FORMAT.format(date));
 
-        tempInfo.setLayout(new GridLayout(2,3));
+        
         tempInfo.add(myDate);
         tempInfo.add(myTime);
         tempInfo.add(myTemp);
