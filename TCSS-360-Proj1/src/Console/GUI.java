@@ -19,6 +19,10 @@ public class GUI {
 
     private JPanel myDisplay;
 
+    final JPanel tempInfo;
+
+    final JPanel graphInfo;
+
     private final ArrayList<JButton> myButton;
 
     private JTextArea myTemp;
@@ -27,9 +31,11 @@ public class GUI {
 
     private JTextArea myRain;
 
-    private JTextArea myCompass;
-
     private JTextArea myHumid;
+
+    private JPanel myGraph;
+
+    private JPanel myCompass;
 
     private final ArrayList<Integer> storage;
 
@@ -37,6 +43,8 @@ public class GUI {
         super();
         storage = new ArrayList<>();
         myFrame = new JFrame("ISS");
+        graphInfo = new JPanel();
+        tempInfo = new JPanel();
         myButton = new ArrayList<JButton>();
         setUp();
     }
@@ -90,19 +98,31 @@ public class GUI {
     private JPanel createDisplay() {
 
         final JPanel theDisplay = new JPanel();
+
+        graphInfo.setLayout(new BorderLayout());
+        theDisplay.setLayout(new BorderLayout());
+
         myTemp = new JTextArea();
         myBaro = new JTextArea();
         myHumid = new JTextArea();
         myRain = new JTextArea();
-        myCompass = new JTextArea();
+        //myCompass = new JTextArea();
 
-        theDisplay.setLayout(new GridLayout(3, 2));
-        theDisplay.add(myCompass);
-        theDisplay.add(myTemp);
-        theDisplay.add(myBaro);
-        theDisplay.add(myHumid);
-        theDisplay.add(myRain);
-        theDisplay.add(new makeCompass());
+        tempInfo.add(myTemp);
+        tempInfo.add(myBaro);
+        tempInfo.add(myHumid);
+        tempInfo.add(myRain);
+
+        myCompass = new makeCompass(0);
+        myGraph = new makeGraphTemp();
+
+        graphInfo.add(myCompass, BorderLayout.NORTH);
+        graphInfo.add(myGraph, BorderLayout.SOUTH);
+        //theDisplay.add(myCompass);
+        
+        theDisplay.add(graphInfo, BorderLayout.WEST);
+        theDisplay.add(tempInfo, BorderLayout.EAST);
+
         return theDisplay;
     }
 
@@ -114,13 +134,21 @@ public class GUI {
         myBaro.setText("BAROMETER\n " + theBaro.getMyBaroPressure());
         myHumid.setText("HUMIDITY\n " + theHumid.getMyHumid());
         myRain.setText("RAIN RATE\n " + theRain.getMyRainRate());
-        myCompass.setText(theWind.getMyCompass());
-        myCompass.setSize(myCompass.getPreferredSize());
-        myDisplay.remove(2);
-        myDisplay.add(new makeGraph(toArray()), 2);
+        //myCompass.setText(theWind.getMyCompass());
+        //myCompass.setSize(myCompass.getPreferredSize());
+        //myDisplay.remove(2);
+        //myDisplay.add(new makeGraph(toArray()), 2);
+        myGraph = new makeGraph(toArray());
+        myCompass = new makeCompass(theWind.getMyWindSpeed());
+        graphInfo.removeAll();
+        graphInfo.add(myCompass, BorderLayout.NORTH);
+        graphInfo.add(myGraph, BorderLayout.SOUTH);
+        graphInfo.setSize(graphInfo.getPreferredSize());
+        graphInfo.repaint();
         myDisplay.repaint();
         myFrame.setMinimumSize(myFrame.getPreferredSize());
         myFrame.repaint();
+        
     }
 
     private int[] toArray() {
@@ -139,9 +167,16 @@ class makeGraph extends JPanel {
 
     private final int[] data;
     private final ArrayList<Shape> shapes = new ArrayList<>();
+    /** The width of the panel. */
+    private static final int WIDTH = 300;
+
+    /** The height of the panel. */
+    private static final int HEIGHT = 200;
 
     public makeGraph(final int[] theData) {
+        super();
         this.data = theData;
+        setPreferredSize(new Dimension(WIDTH, HEIGHT));
     }
 
     @Override
@@ -164,27 +199,72 @@ class makeGraph extends JPanel {
     }
 }
 
+class makeGraphTemp extends JPanel {
+
+     /**
+    *
+    */
+    private static final long serialVersionUID = 1L;
+
+    /** The width of the panel. */
+     private static final int WIDTH = 300;
+
+     /** The height of the panel. */
+     private static final int HEIGHT = 200;
+ 
+     public makeGraphTemp() {
+         super();
+         setPreferredSize(new Dimension(WIDTH, HEIGHT));
+     }
+ 
+     @Override
+     public void paintComponent(final Graphics g) {
+         super.paintComponent(g);
+         final Graphics2D g2d = (Graphics2D) g;
+ 
+         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+ 
+         final Shape rectangle = new Rectangle2D.Double(10, 10, getWidth() - 20, getHeight() - 20);
+         g2d.draw(rectangle);
+}
+}
+
 class makeCompass extends JPanel {
 
     private static final long serialVersionUID = 1L;
+    
+    /** The width of the panel. */
+    private static final int WIDTH = 300;
+
+    /** The height of the panel. */
+    private static final int HEIGHT = 200;
+
+    private String windSpeed;
+
+
+    public makeCompass(int theSpeed) {
+        super();
+        this.windSpeed = Integer.toString(theSpeed);
+        setPreferredSize(new Dimension(WIDTH, HEIGHT));
+    }
 
     @Override
     public void paintComponent(final Graphics g) {
         super.paintComponent(g);
         final Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        final Shape circle = new Ellipse2D.Double(getWidth()/4, 0, getHeight(), getHeight());
-        final Shape circle2 = new Ellipse2D.Double((getWidth()/4)+14, 14, 
+        final Shape circle = new Ellipse2D.Double(getWidth()/8, 0, getHeight(), getHeight());
+        final Shape circle2 = new Ellipse2D.Double((getWidth()/8)+14, 14, 
                                                     getHeight()-28,getHeight()-28);
         g2d.draw(circle);
         g2d.draw(circle2);
-        g2d.drawString("Wind", 20,20);
-        g2d.drawString("N", getWidth()/2-3, 12);
-        g2d.drawString("S", getWidth()/2-3, getHeight()-2);
-        g2d.drawString("W", getWidth()/4+2, getHeight()/2);
-        g2d.drawString("E", getWidth()-(getWidth()/4)-10, getHeight()/2);
-        g2d.drawString("25", (getWidth()/2)-5, getHeight()/2);
-        g2d.drawString("MPH", (getWidth()/2)-10, (getHeight()/2)+15);
+        g2d.drawString("Wind", 10,15);
+        g2d.drawString("N", getWidth()/2-16, 12);
+        g2d.drawString("S", getWidth()/2-16, getHeight()-2);
+        g2d.drawString("W", getWidth()/8+2, getHeight()/2);
+        g2d.drawString("E", getWidth()-(getWidth()/4), getHeight()/2);
+        g2d.drawString(windSpeed, (getWidth()/2)-15, getHeight()/2);
+        g2d.drawString("MPH", (getWidth()/2)-17, (getHeight()/2)+15);
     }
 }
 
