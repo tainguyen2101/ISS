@@ -109,6 +109,7 @@ public class GUI {
         myChill = new JTextArea();
         myTime = new JTextArea(TIME_FORMAT.format(time));
         myDate = new JTextArea(DATE_FORMAT.format(date));
+        
 
         
         tempInfo.add(myDate);
@@ -139,8 +140,15 @@ public class GUI {
             final Temperature theTemp, final Wind theWind, final HumidIn humidIn, final TempIn tempIn) {
 
         storage.add(theWind.getMyWindSpeed());
+        
+        time = LocalDateTime.now();
+        date = LocalDateTime.now();
+        myTime.setText(TIME_FORMAT.format(time));
+        myDate.setText(DATE_FORMAT.format(date));
+
         double chill = 35.74 + 0.6215 * theTemp.getMyTemp() - (35.75 * (Math.pow(theWind.getMyWindSpeed(), 0.16))) 
                         + (0.4275 * theTemp.getMyTemp() * (Math.pow(theWind.getMyWindSpeed(), 0.16)));
+                        
         myTemp.setText("TEMP OUT\n " + theTemp.getMyTemp() + "\u00B0" + "F");
         myBaro.setText("BARO\n " + theBaro.getMyBaroPressure() + " in");
         myHumid.setText("HUM OUT\n " + theHumid.getMyHumid() + "%");
