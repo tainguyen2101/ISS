@@ -34,6 +34,8 @@ public class Driver {
     private TempIn tempIn;
 
     public static void main(String[] args) {
+    	
+		
         try {
             theGUI = new GUI();
         } catch (Exception e1) {
@@ -92,7 +94,7 @@ public class Driver {
                 }               
                 theGUI.updateDisplay(baroLabel, humiLabel, rainLabel, tempLabel, winLabel, humidIn, tempIn);
                 synchronized (this) {
-                    this.wait(60*1000); 
+                    this.wait(20);
                 }
             }
             rdrISS.close();

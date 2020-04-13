@@ -28,7 +28,7 @@ public class RandomSensorDataGenerator {
 
 
 	//// Outside data
-	static int 		intervals = 200;   /// Interval is how many data point the Program prints to lists and represents minutes. 2400 hrs = 1 day of data.
+	static int 		intervals = 4800;   /// Interval is how many data point the Program prints to lists and represents minutes. 2400 hrs = 1 day of data.
 	static double 	milTime;  			/// Range 0-2400   	military Time (module 2400) 
 	static int 		mywindDirection;  	/// Range 0-360 	Degree Azimuth 
 	static int 		myWindSpeed;     	/// Range 0-25 		miles per hour
