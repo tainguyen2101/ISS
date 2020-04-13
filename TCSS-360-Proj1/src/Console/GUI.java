@@ -12,8 +12,6 @@ import java.awt.geom.Ellipse2D;
 
 public class GUI {
 
-    
-
     private static final Toolkit TOOL = Toolkit.getDefaultToolkit();
 
     private static final Dimension SCREEN_SIZE = TOOL.getScreenSize();
@@ -144,7 +142,7 @@ public class GUI {
         double chill = 35.74 + 0.6215 * theTemp.getMyTemp() - (35.75 * (Math.pow(theWind.getMyWindSpeed(), 0.16))) 
                         + (0.4275 * theTemp.getMyTemp() * (Math.pow(theWind.getMyWindSpeed(), 0.16)));
         myTemp.setText("TEMP OUT\n " + theTemp.getMyTemp() + "\u00B0" + "F");
-        myBaro.setText("BAROMETER\n " + theBaro.getMyBaroPressure() + " in");
+        myBaro.setText("BARO\n " + theBaro.getMyBaroPressure() + " in");
         myHumid.setText("HUM OUT\n " + theHumid.getMyHumid() + "%");
         myRain.setText("RAIN RATE\n " + theRain.getMyRainRate() + " in/hr");
         myTempIn.setText("TEMP IN\n " + tempIn.getMyTemp()  + "\u00B0" + "F");
