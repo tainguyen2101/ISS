@@ -7,6 +7,7 @@ import java.io.FileReader;
 import Console.GUI;
 import Envoy.HumidIn;
 import Envoy.TempIn;
+import Generator.RandomSensorDataGenerator;
 
 /**
  * Driver
@@ -33,7 +34,11 @@ public class Driver {
 
     private TempIn tempIn;
 
-    public static void main(String[] args) {    	
+    private static RandomSensorDataGenerator generate = new RandomSensorDataGenerator();
+
+    public static void main(String[] args) {
+        generate.createISSData();
+        generate.createEnvoyData();
         try {
             theGUI = new GUI();
         } catch (Exception e1) {
