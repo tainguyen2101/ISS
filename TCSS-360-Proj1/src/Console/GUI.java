@@ -181,7 +181,7 @@ public class GUI {
 		}
 		hour++;
 
-
+		// Calculate Chill 
 		double chill = 35.74 + 0.6215 * theTemp.getMyTemp() - (35.75 * (Math.pow(theWind.getMyWindSpeed(), 0.16))) 
 				+ (0.4275 * theTemp.getMyTemp() * (Math.pow(theWind.getMyWindSpeed(), 0.16)));
 
