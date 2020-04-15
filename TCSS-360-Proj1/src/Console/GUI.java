@@ -284,10 +284,6 @@ public class GUI {
 		dataMemory[6][25]=90;
 
 	}
-
-
-
-
 }
 
 class makeGraph extends JPanel {

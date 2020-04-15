@@ -33,9 +33,7 @@ public class Driver {
 
     private TempIn tempIn;
 
-    public static void main(String[] args) {
-    	
-		
+    public static void main(String[] args) {    	
         try {
             theGUI = new GUI();
         } catch (Exception e1) {
