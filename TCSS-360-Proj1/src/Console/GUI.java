@@ -333,9 +333,7 @@ class makeGraph extends JPanel {
 
 class makeGraphTemp extends JPanel {
 
-	/**
-	 *
-	 */
+	
 	private static final long serialVersionUID = 1L;
 
 	/** The width of the panel. */
