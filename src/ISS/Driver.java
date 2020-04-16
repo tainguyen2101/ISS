@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 
 import Console.GUI;
+import Envoy.EnvoyCore;
 import Envoy.HumidIn;
 import Envoy.TempIn;
 import Generator.RandomSensorDataGenerator;
@@ -48,6 +49,9 @@ public class Driver {
     
     /** Array to hold all sensor data. Sensor order is currently determined by GUI.updateDisplay()*/
     private Sensor[] myData = new Sensor[7];
+    
+    /** Envoy that holds data remotely. */
+    private EnvoyCore envoy = new EnvoyCore();
 
     /**
      * Main program that runs everything.
@@ -123,6 +127,7 @@ public class Driver {
                     }
                 }   
                 theGUI.updateDisplay(myData);
+                envoy.addNewData(myData);
                 //theGUI.updateDisplay(baroLabel, humiLabel, rainLabel, tempLabel, winLabel, humidIn, tempIn);
                 synchronized (this) {
                     this.wait(20);
@@ -148,6 +153,7 @@ public class Driver {
         try {
             theGUI = new GUI();
             run();
+            envoy.getData(0); // try to retrieve information from envoy
         } catch (Exception e) {
             e.printStackTrace();
         }
