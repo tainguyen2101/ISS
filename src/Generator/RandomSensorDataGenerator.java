@@ -44,7 +44,7 @@ public class RandomSensorDataGenerator {
 	/**
 	 * How often the program prints the data to the lists.
 	 */
-	public static int 		intervals = 4800;   /// Interval is how many data point the Program prints to lists and represents minutes. 2400 hrs = 1 day of data.
+	public static int 		intervals = 50000;   /// Interval is how many data point the Program prints to lists and represents minutes. 2400 hrs = 1 day of data.
 	
 	/**
 	 * Variable to store military time.
@@ -144,8 +144,8 @@ public class RandomSensorDataGenerator {
 			printout.print(myWindSpeed+",");
 
 
-			int tempOffset=random.ints(-5,(5)).findFirst().getAsInt(); 			// Temp Offset plus minus 1
-			myTempOut = (int)((45*(Math.sin(1200/milTime)+1))*10+tempOffset);  // OutSide temp Cyclic
+			int tempOffset=random.ints(-20,(20)).findFirst().getAsInt(); 			// Temp Offset plus minus 1
+			myTempOut = (int)(250*Math.sin(Math.PI*milTime/1200)+650+tempOffset);  // OutSide temp Cyclic
 			printout.print(myTempOut+",");
 
 
@@ -173,7 +173,9 @@ public class RandomSensorDataGenerator {
 			printout.print(myRainRate+"\n");
 
 
-
+			if((milTime-59)%100==0) {
+				milTime=milTime+40;
+			}
 			milTime=(milTime+1)%2400;
 		}
 	}
@@ -193,7 +195,7 @@ public class RandomSensorDataGenerator {
 
 		for(int i =0; i<intervals ; i++) {
 			printin.print((int) (milTime)+",");
-			myTempIn = (int)((45*(Math.sin(1200/(milTime*.3+800))+1))*10)-30;  // InSide temp Cyclic
+			myTempIn = (int)(50*Math.sin(Math.PI*milTime/1200)+750); // InSide temp Cyclic
 			printin.print(myTempIn+",");
 
 
@@ -203,7 +205,9 @@ public class RandomSensorDataGenerator {
 				myHumOut=myHumOut-2;
 			}
 			printin.print(myHumOut+"\n");
-
+			if((milTime-59)%100==0) {
+				milTime=milTime+40;
+			}
 			milTime=(milTime+1)%2400;
 		}
 	}
