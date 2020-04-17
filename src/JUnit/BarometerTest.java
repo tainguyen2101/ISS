@@ -1,4 +1,4 @@
-package junittests;
+package JUnit;
 
 
 
