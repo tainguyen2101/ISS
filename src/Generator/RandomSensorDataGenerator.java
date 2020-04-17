@@ -7,6 +7,7 @@ package Generator;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.util.Calendar;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -59,12 +60,12 @@ public class RandomSensorDataGenerator {
 	/**
 	 * Variable to store wind speed.
 	 */
-	public static int 		myWindSpeed;     	/// Range 0-25 		miles per hour
+	public static int 		myWindSpeed;     	/// Range 0-5 		miles per hour
 	
 	/**
 	 * Variable to store outside temperature.
 	 */
-	public static int 		myTempOut;      	/// Range 0-1400  	divide by 10 to get degrees in F. Ex the value 754/10 = 74.5 F
+	public static int 		myTempOut;      	/// Range 400-900  	divide by 10 to get degrees in F. Ex the value 754/10 = 74.5 F
 	
 	/**
 	 * Variable to store outside humidity.
@@ -79,14 +80,14 @@ public class RandomSensorDataGenerator {
 	/**
 	 * Variable to store rain rate.
 	 */
-	public static int 		myRainRate;       	/// Range 0-2000 	Divide by 100 to get inches per hour. Ex 223/100 = 2.23 inches of rain per hour.
+	public static int 		myRainRate;       	/// Range 0-500 	Divide by 100 to get inches per hour. Ex 223/100 = 2.23 inches of rain per hour.
 
 	//// Inside data
 	
 	/**
 	 * Variable to store inside temperature.
 	 */
-	public static int 		myTempIn ;			/// Range 0-1400  	divide by 10 to get degrees in F. Ex the value 754/10 = 74.5 F
+	public static int 		myTempIn ;			/// Range 600-800  	divide by 10 to get degrees in F. Ex the value 754/10 = 74.5 F
 	
 	/**
 	 * Variable to store inside humidity.
@@ -100,10 +101,10 @@ public class RandomSensorDataGenerator {
 		milTime = 1200;     	/// Range 0-2400   military Time (module 2401)
 		mywindDirection=5;  	/// Range 0-360 		degree Azimuth 
 		myWindSpeed =5;     	/// Range 0-25 		miles per hour
-		myTempOut=700;      	/// Range 0-1400  	divide by 10 to get degrees in F
+		myTempOut=700;      	/// Range 400-900  	divide by 10 to get degrees in F
 		myHumOut=600;        	/// Range 0-1000 	divide by 10 to get %. Ex the value 754/10 = 74.5% Humidity
 		myBarometer=300;    	/// Range 259 -320 	Divide by 10 to get  hPa
-		myRainRate=100;   	 	/// Range 0-2000 	Divide by 100 to get inches per hour
+		myRainRate=100;   	 	/// Range 0-500 	Divide by 100 to get inches per hour
 	}
 
 	/**
@@ -111,7 +112,7 @@ public class RandomSensorDataGenerator {
 	 */
 	public void setInitialInValues() {
 		milTime = 1200;  
-		myTempIn = 800;			/// Range 0-1400  	divide by 10 to get degrees in F. Ex the value 754/10 = 74.5 F
+		myTempIn = 800;			/// Range 700-800  	divide by 10 to get degrees in F. Ex the value 754/10 = 74.5 F
 		HumIn = 600;			/// Range 0-1000	divide by 10 to get %. Ex the value 754/10 = 74.5% Humidity
 
 	}
@@ -120,7 +121,9 @@ public class RandomSensorDataGenerator {
 	 * Generate the data that will be transferred to the ISS when read from OutSide.txt.
 	 */
 	public void createISSData() {   //// createISSData method writes Randomized ISS Sensor Data into OutSide.txt
-
+		Calendar now = Calendar.getInstance();
+		milTime=now.get(Calendar.HOUR_OF_DAY)*100;
+		
 		setInitialOutValues();
 
 		try {
@@ -169,7 +172,10 @@ public class RandomSensorDataGenerator {
 
 
 			int rainRateOffset=random.ints(-1,(2)).findFirst().getAsInt(); // Temp Offset plus minus 1
-			myRainRate = myRainRate+rainRateOffset;  // OutSide temp Cyclic
+			myRainRate = Math.abs(myRainRate+rainRateOffset);  // OutSide temp Cyclic
+			if (myRainRate>500) {
+				myRainRate=myRainRate-100;
+			}
 			printout.print(myRainRate+"\n");
 
 
@@ -184,6 +190,8 @@ public class RandomSensorDataGenerator {
 	 * Create the data that will be transferred to the Envoy when read from InSide.txt.
 	 */	
 	public void createEnvoyData() {		 //// createEnvoyData method writes Randomized Envoy Sensor Data into InSide.txt
+		Calendar now = Calendar.getInstance();
+		milTime=now.get(Calendar.HOUR_OF_DAY)*100;
 		setInitialInValues();
 
 

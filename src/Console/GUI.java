@@ -144,32 +144,36 @@ public class GUI {
      */
 	private JPanel createButtonPanel() {
 		final JPanel buttonPanel = new JPanel(new GridLayout(6, 2));
-		myButton.add(new JButton("Temp"));
-		myButton.add(new JButton("2ND"));
+		myButton.add(new JButton("Bar"));
 		myButton.add(new JButton("Hum"));
-		myButton.add(new JButton("Forecast"));
-		myButton.add(new JButton("Wind"));
-		myButton.add(new JButton("Graph"));
 		myButton.add(new JButton("RainDay"));
+		myButton.add(new JButton("Temp"));
+		myButton.add(new JButton("Wind"));
+		
+		
+		/*myButton.add(new JButton("2ND"));
+		myButton.add(new JButton("Forecast"));
+		myButton.add(new JButton("Graph"));
 		myButton.add(new JButton("Hi/Low"));
 		myButton.add(new JButton("RainYr"));
 		myButton.add(new JButton("Alarm"));
-		myButton.add(new JButton("Bar"));
 		myButton.add(new JButton("Done"));
+		*/
+		
 		for (int i = 0; i < myButton.size(); i++) {
 			buttonPanel.add(myButton.get(i));
 		}
 	
-		myButton.get(10).addActionListener(e -> { /// Action listeners for Jbutton changes the variable on the graph
+		myButton.get(0).addActionListener(e -> { /// Action listeners for Jbutton changes the variable on the graph
 			graphVariable=0;  //Bar
 		});
-		myButton.get(2).addActionListener(e -> {
+		myButton.get(1).addActionListener(e -> {
 			graphVariable=1;  //HumidOut
 		});
-		myButton.get(5).addActionListener(e -> {
+		myButton.get(2).addActionListener(e -> {
 			graphVariable=2;	//RainRate
 		});
-		myButton.get(0).addActionListener(e -> {
+		myButton.get(3).addActionListener(e -> {
 			graphVariable=3;   // temp
 		});
 		myButton.get(4).addActionListener(e -> {
@@ -249,15 +253,7 @@ public class GUI {
 					for (int i = 0; i < sensors.length; i++) {
 						dataMemory[i][currentMemIndex] = (double) (sensors[i].getData());
 					}
-					/*
-					dataMemory[0][currentMemIndex]=(double)(sensors[0].getMyBaroPressure());
-					dataMemory[1][currentMemIndex]=(double)(theHumid.getMyHumid());
-					dataMemory[2][currentMemIndex]=(double)(theRain.getMyRainRate());
-					dataMemory[3][currentMemIndex]=(double)(theTemp.getMyTemp());
-					dataMemory[4][currentMemIndex]=(double)(theWind.getMyWindSpeed());
-					dataMemory[5][currentMemIndex]=(double)(humidIn.getMyHumid());
-					dataMemory[6][currentMemIndex]=(double)(tempIn.getMyTemp());
-					*/
+				
 					currentMemIndex=(currentMemIndex+1)%24;
 					hour=time.getHour();
 					hour=hour%60;
@@ -358,12 +354,12 @@ public class GUI {
 		dataMemory[1][25]=100;
 
 		// RAIN
-		dataMemory[2][24]=8;   
-		dataMemory[2][25]=10;
+		dataMemory[2][24]=0;   
+		dataMemory[2][25]=5;
 
 		//TEMPOUT
 		dataMemory[3][24]=40;  
-		dataMemory[3][25]=140;
+		dataMemory[3][25]=130;
 
 		//WINDSPEED
 		dataMemory[4][24]=0;   
@@ -440,8 +436,8 @@ class makeGraph extends JPanel {
 
 		for (int i = 0; i < 24; i++) {
 
-			if(data[i]>0) {
-				shapes.add(new Ellipse2D.Double(((getWidth() / 24) * i) + 10, getHeight() - 13 - data[i], 5, 5));
+			if(data[i]>=0) {
+				shapes.add(new Ellipse2D.Double(((getWidth() / 24) * i) + 10, getHeight() - 16 - data[i], 5, 5));
 			}
 		}
 		for (int i = 0; i < shapes.size(); i++) {
