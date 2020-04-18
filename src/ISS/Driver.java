@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 
 import Console.GUI;
-import Envoy.EnvoyCore;
 import Envoy.HumidIn;
 import Envoy.TempIn;
 import Generator.RandomSensorDataGenerator;
@@ -42,16 +41,13 @@ public class Driver {
     private static GUI theGUI;
     
     /** File object to the outside data file. */
-    private static final File Outside = new File("OutSide.txt");
+   private static File Outside = new File("OutSide.txt");
     
     /** File object to the inside data file. */
-    private static final File Inside = new File("InSide.txt");
+    private static File Inside = new File("InSide.txt");
     
     /** Array to hold all sensor data. Sensor order is currently determined by GUI.updateDisplay()*/
     private Sensor[] myData = new Sensor[7];
-    
-    /** Envoy that holds data remotely. */
-    private EnvoyCore envoy = new EnvoyCore();
 
     /**
      * Main program that runs everything.
@@ -127,8 +123,6 @@ public class Driver {
                     }
                 }   
                 theGUI.updateDisplay(myData);
-                envoy.addNewData(myData);
-                //theGUI.updateDisplay(baroLabel, humiLabel, rainLabel, tempLabel, winLabel, humidIn, tempIn);
                 synchronized (this) {
                     this.wait(20);
                 }
@@ -147,16 +141,18 @@ public class Driver {
      * Intended to use for JUnit testing. Generate data, initialize the GUI and pass 1 line of data 
      * to the GUI for it to update, then STOP the program. 
      */
-    public void debug() {
+    public int debug() {
+    	int result = 1;
         generateData();
         debug = true;
         try {
             theGUI = new GUI();
             run();
-            envoy.getData(0); // try to retrieve information from envoy
         } catch (Exception e) {
+        	result = 0;
             e.printStackTrace();
         }
         debug = false;
+        return result;
     }
 }
