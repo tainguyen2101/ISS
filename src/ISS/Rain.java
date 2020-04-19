@@ -1,10 +1,10 @@
 package ISS;
 /**
- * Rain
+ * Rain sensor. Contains rain data.
  */
 public class Rain extends Sensor{
-    // rain value is the default data  field (myData)
-
+    // rain value is the default data field (myData)
+    
     /**
      * Main public constructor.
      * 
@@ -13,7 +13,7 @@ public class Rain extends Sensor{
     public Rain(final double theRainRate) {
         super(theRainRate);
     }
-
+    
     /**
      * Return the rain rate. Same effect as getData()
      * 
@@ -22,5 +22,4 @@ public class Rain extends Sensor{
     public double getMyRainRate() {
         return getData();
     }
-   
 }

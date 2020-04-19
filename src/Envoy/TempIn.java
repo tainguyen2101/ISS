@@ -1,7 +1,9 @@
 package Envoy;
 
 import ISS.Sensor;
-
+/**
+ * Inside Temperature sensor. Contains value of temperature. Part of the Envoy.
+ */
 public class TempIn extends Sensor{
     // Inside temperature is the default data field (myData)
     

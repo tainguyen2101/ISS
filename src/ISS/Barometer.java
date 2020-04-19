@@ -1,6 +1,6 @@
 package ISS;
 /**
- * Barometer
+ * Barometer (sensor). Contains value of values of elevation and pressure.
  */
 public class Barometer extends Sensor{
 

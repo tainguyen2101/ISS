@@ -1,7 +1,7 @@
 package ISS;
  
  /**
- * TemperatureSensor
+ * Temperature Sensor. Contains temperature value.
  */
 public class Temperature extends Sensor{
     // Temperature value is the default data field (myData)

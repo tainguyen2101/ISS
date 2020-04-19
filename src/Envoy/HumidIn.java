@@ -1,7 +1,9 @@
 package Envoy;
 
 import ISS.Sensor;
-
+/**
+ * Inside humidity sensor. Contains value of humidity. Part of the Envoy.
+ */
 public class HumidIn extends Sensor{
     // Inside humidity is the default data field (myData)
     

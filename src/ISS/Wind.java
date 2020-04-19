@@ -1,6 +1,6 @@
 package ISS;
 /**
- * WindDirection
+ * Wind Sensor. Contains wind speed and wind direction.
  */
 public class Wind extends Sensor{
 

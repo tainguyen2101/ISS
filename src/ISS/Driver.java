@@ -5,12 +5,13 @@ import java.io.File;
 import java.io.FileReader;
 
 import Console.GUI;
+import Envoy.EnvoyCore;
 import Envoy.HumidIn;
 import Envoy.TempIn;
 import Generator.RandomSensorDataGenerator;
 
 /**
- * Driver
+ * Driver class. The main of the whole program. 
  */
 public class Driver {
     /** Location of wind sensor in array. */
@@ -48,6 +49,9 @@ public class Driver {
     
     /** Array to hold all sensor data. Sensor order is currently determined by GUI.updateDisplay()*/
     private Sensor[] myData = new Sensor[7];
+    
+    /** Envoy core that holds long term data. */
+    private EnvoyCore envoy = new EnvoyCore();
 
     /**
      * Main program that runs everything.
@@ -123,6 +127,7 @@ public class Driver {
                     }
                 }   
                 theGUI.updateDisplay(myData);
+                envoy.addNewData(myData);
                 synchronized (this) {
                     this.wait(20);
                 }

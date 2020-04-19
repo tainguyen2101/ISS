@@ -1,6 +1,6 @@
 package ISS;
 /**
- * Humidity
+ * Humidity sensor. Contains humidity value.
  */
 public class Humidity extends Sensor{
     // The humidity is the default field (myData)
